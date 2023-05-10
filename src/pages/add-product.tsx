@@ -76,7 +76,6 @@ export default function AddProductForm() {
         <br />
         <button type="submit">Add Product</button>
         {message && <div>{message}</div>}
-        <p>UWU</p>
       </form>
     </>
   );

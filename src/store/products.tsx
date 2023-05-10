@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useMemo } from "react"
 import type { ProductProps, ProductPropsNotID } from "~/components/product";
 
-
 interface ProductState {
   products: ProductProps[];
   isLoading: boolean;
@@ -12,14 +11,13 @@ interface ProductState {
   setSearchQuery: (query: string) => void;
   fetchProducts: () => void;
   addProduct: (product: ProductPropsNotID) => void;
+  deleteProduct: (productId: number) => void;
 }
 
 interface ApiResponse {
   products: ProductProps[];
 }
 
-// Declaring the state for the products using Zustand as well as the
-// Main functionalities that I'm expecting
 export const useProductStore = create<ProductState>((set) => ({
   products: [],
   isLoading: true,
@@ -41,7 +39,7 @@ export const useProductStore = create<ProductState>((set) => ({
     axios
       .post("http://localhost:5000/products/add", product)
       .then((response) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
         const newProduct = response.data.product;
         set((state) => ({
           products: [...state.products, newProduct],
@@ -51,10 +49,20 @@ export const useProductStore = create<ProductState>((set) => ({
         console.log(error);
       });
   },
+  deleteProduct: (productId: number) => {
+    axios
+      .delete(`http://localhost:5000/products/delete-by-id/${productId}`)
+      .then(() => {
+        set((state) => ({
+          products: state.products.filter((product) => product.id !== productId),
+        }));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  },
 }));
 
-
-// Final function to use products
 export const useProducts = () => {
   const { products, isLoading, hasError, searchQuery, setSearchQuery, fetchProducts } = useProductStore();
 
@@ -62,8 +70,6 @@ export const useProducts = () => {
     fetchProducts();
   }, [fetchProducts]);
 
-  // We're using memo here to avoid loading the products that we already have
-  // multiple times, improving our performance
   const filteredProducts = useMemo(() => {
     if (!searchQuery) {
       return products;
@@ -73,7 +79,6 @@ export const useProducts = () => {
     return products.filter((product) => product.name.toLowerCase().includes(query));
   }, [searchQuery, products]);
 
-  // And finally we return the declared properties of the store
   return {
     products,
     filteredProducts,

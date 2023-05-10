@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { FaShoppingCart } from "react-icons/fa"
+import { useProductStore } from "~/store/products";
 
 // Product type
 export interface ProductProps {
@@ -14,8 +15,14 @@ export interface ProductPropsNotID {
   imageURL: string;
 }
 
-
 export default function Product({ price, id, name, imageURL }: ProductProps) {
+  const { deleteProduct } = useProductStore();
+
+  function handleProductDelete(id: number){
+    deleteProduct(id)
+  }
+
+
   return (
 
     // Basic card layout
@@ -31,7 +38,7 @@ export default function Product({ price, id, name, imageURL }: ProductProps) {
         <button className="bg-blue-500 my-2 flex h-12 w-full items-center justify-center gap-2 rounded-md text-xl font-semibold text-white hover:brightness-90">
           Add to Cart <FaShoppingCart className="text-xl text-white" />
         </button>
-        <button className="bg-red-500 my-2 flex h-12 w-full items-center justify-center gap-2 rounded-md text-xl font-semibold text-white hover:brightness-90">
+        <button onClick={() => handleProductDelete(id)} className="bg-red-500 my-2 flex h-12 w-full items-center justify-center gap-2 rounded-md text-xl font-semibold text-white hover:brightness-90">
           Delete product
         </button>
       </div>
