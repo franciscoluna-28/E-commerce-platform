@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useProductStore } from "../store/products";
+import Link from "next/link";
 
 //TODO Improve the hooks here
 // Probably turning all of this into some sort of useReducer, maybe
@@ -77,6 +78,8 @@ export default function AddProductForm() {
         <button type="submit">Add Product</button>
         {message && <div>{message}</div>}
       </form>
+      <Link href="/">Go home</Link>
     </>
+    
   );
 }
