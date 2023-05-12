@@ -6,16 +6,19 @@ const Products = () => {
   const { filteredProducts, isLoading, hasError} = useProducts();
 
   return (
-    <div>
+    <div className="">
 
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <ul>
+        <section className="mt-6">
+          <ul className="flex gap-6">
           {filteredProducts.map((product) => (
+
         <Product key={product.id} {...product}/>
           ))}
-        </ul>
+          </ul>
+        </section>
       )}
 
       
