@@ -28,9 +28,9 @@ export default function Product({ price, id, name, imageURL }: ProductProps) {
     // Basic card layout
     // TODO Change the UI design (add the user, enhanced buttons, etc)
     <li key={id}>
-    <div className="mx-auto max-w-2xl">
+    <article className="mx-auto max-w-2xl hover:scale-105 duration-300">
       <div className="max-w-fit rounded-lg border-2 bg-white p-8 shadow-md duration-300 hover:shadow-xl">
-        <Image alt="E-Commerce Product" className="max-h-fit rounded-md" width={256} height={256} src={imageURL}/>
+        <Image alt="E-Commerce Product" className="max-h-36 rounded-md" width={256} height={256} src={imageURL}/>
         <h3 className="text-projectBlack mt-2 text-left text-4xl font-bold">
           {name}
         </h3>
@@ -42,7 +42,7 @@ export default function Product({ price, id, name, imageURL }: ProductProps) {
           Delete product
         </button>
       </div>
-    </div>
+    </article>
     </li>
   );
 }
